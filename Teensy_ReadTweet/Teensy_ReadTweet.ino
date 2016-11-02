@@ -26,15 +26,13 @@ void setup()
 void loop() 
 {
   String inputString; // String to hold incoming data
-  char inChar; // Char to hold each incoming character
-  boolean stringComplete = false; // Tell if the incoming string is complete
   
   // If the Teensy receives a message over Serial connection, store it in inputString
   inputString = readStringFromSerial();
 
   if (inputString.length() != 0)
   {
-    Serial.println("The message is: " + inputString);
+    Serial.println("About to send the message... the message is: " + inputString);
     Wire.beginTransmission(8); // Transmit the message to the device at address #8 
     Wire.write(inputString.c_str()); // Sends the input string to the 
     Wire.endTransmission(); // Stop transmitting the message
@@ -42,7 +40,6 @@ void loop()
     // Clear the contents of the inputString
     inputString = "";
     // Reset the Serial.read() completion indicator, stringComplete
-    stringComplete = false;
   }
 
   delay(500);
@@ -63,6 +60,7 @@ String readStringFromSerial()
   while (Serial.available() > 0) 
   {
     stringFromSerial = Serial.readStringUntil('\n');
-    return stringFromSerial;
+    Serial.println("Message entered... sending to HUZZAH.");
   }
+  return stringFromSerial;
 }
